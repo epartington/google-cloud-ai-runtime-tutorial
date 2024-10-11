@@ -39,7 +39,7 @@ The diagram below shows the brownfield environment you will create.  The `gce-vp
 
 <img src="images/diagram_00.png" alt="diagram_00.png" width="50%"/>
 
-## Step 2. Review End-State Environment with AIRS
+### Step 2. Review End-State Environment with AIRS
 
 The diagram below shows the tutorial’s end-state where AIRS secures all traffic within the environment.
 
@@ -85,8 +85,8 @@ Create an OpenAI API key. This key is passed to `ai-vm` via custom metadata.
     <img src="images/p1_03.png" alt="p1_03.png" />
 
 
-> [!CAUTION]
-> It is likely you will have to pay to increase the API key quota to complete the tutorial.
+> [!IMPORTANT]
+> You may exceed the free API during the tutorial.  If this is the case, you may need to increase your API quota. 
 
 ### Step 2. Create Brownfield Environment
 
@@ -160,7 +160,7 @@ Create the brownfield environment in your Google Cloud project.
 
 8. Enter the `export` commands within the `SET_ENV_VARS` output into cloud shell. 
 
-> [!NOTE
+> [!NOTE]
 >  The `export` command sets environment variables for your GCP project, region, zone, and GKE cluster name. 
 
 
@@ -183,7 +183,7 @@ Onboard your GCP project into SCM.  Once completed, SCM generates a terraform pl
 
 2. Go to **Insights → AI Runtime Security**.
 
-> [!NOTE]
+> [!TIP]
 > The AIRS dashboard displays information about your networks and AI usage.  It is also where you define deployment profiles for the AIRS firewalls.
     
 
@@ -206,7 +206,7 @@ Onboard your GCP project into SCM.  Once completed, SCM generates a terraform pl
     <img src="images/p2_02.png" alt="p2_02.png" />
 
 > [!NOTE]
-> The VPCs created in **Task 1** are preconfigured to store flow logs to a GCS bucket.  For more information on how this is done manually, please see <a href="https://docs.paloaltonetworks.com/ai-runtime-security/activation-and-onboarding/onboard-and-activate-cloud-account-in-scm/discovery-onboarding-prerequisites-for-gcp">Onboarding Prerequisites</a>.
+> The VPCs created in **Task 1** are preconfigured to forward flow logs to a GCS bucket.  For more information on how this is done manually, please see <a href="https://docs.paloaltonetworks.com/ai-runtime-security/activation-and-onboarding/onboard-and-activate-cloud-account-in-scm/discovery-onboarding-prerequisites-for-gcp">Onboarding Prerequisites</a>.
     
 
 5. **Application Definition**, click **Next**.
@@ -224,7 +224,7 @@ Onboard your GCP project into SCM.  Once completed, SCM generates a terraform pl
 > [!NOTE]
 > This downloads a terraform plan to your local machine.
 
-> [!CAUTION]
+> [!IMPORTANT]
 > Do not click <b>Done</b> in SCM, yet.</b>
 
 
@@ -241,10 +241,6 @@ Upload and apply the terraform plan in Google Cloud Shell. The plan creates the 
         --service=cloudasset.googleapis.com \
         --project=$PROJECT_ID
     ```
-
-> [!CAUTION]
-> Accept the authorization prompt.
-
 
 3. In cloud shell, click **⋮ → Upload**
 
@@ -289,7 +285,7 @@ Upload and apply the terraform plan in Google Cloud Shell. The plan creates the 
 
      <img src="images/p2_07.png" alt="p2_07.png" />
 
-> [!CAUTION]
+> [!IMPORTANT]
 > Continue to the next step while SCM analyizes your flow logs.  This process can take up to 30 minutes. 
     
 
@@ -325,8 +321,8 @@ Authenticate to the GKE cluster in `gke-vpc`.  Then, create 2 namespaces (`prd` 
     kubectl create -n prd -f https://raw.githubusercontent.com/mattmclimans/lab-works/main/009/web-app.yaml
     ```
 
-> [!NOTE]
-> SCM will automatically discover the namespaces in the next step of the lab. 
+> [!TIP]
+> SCM will automatically discover the namespaces through its monitoring capability. 
     
 
 6. Retrieve the `EXTERNAL-IP` assigned to the `jenkins` services. 
@@ -341,7 +337,7 @@ Authenticate to the GKE cluster in `gke-vpc`.  Then, create 2 namespaces (`prd` 
     jenkins    LoadBalancer   10.30.4.121     </b>34.135.110.150</b>  80:31280/TCP</pre>
     
 
-> [!CAUTION]
+> [!IMPORTANT]
 > If the <code>EXTERNAL-IP</code> is <code>pending</code>, wait and re-run the command.
 
 
@@ -419,7 +415,7 @@ Create an SSH key and SCM folders for the AIRS firewall and tag collector.
 
     <img src="images/p3_02.png" alt="p3_02.png"/>
     
-> [!NOTE]
+> [!TIP]
 > The AIRS firewall will automatically bootstrap & receive all configurations from the <code>gcp-airs</code> folder.
 
 
@@ -436,7 +432,7 @@ Create an SSH key and SCM folders for the AIRS firewall and tag collector.
     ```
 
 > [!CAUTION]
-> Record the public key value to a text editor.  You will need it in the next step.
+> Record the value of the public key.  You will need it in the next step when you configure the AIRS firewalls.
 
 
 
@@ -454,7 +450,7 @@ Configure the AIRS deployment in SCM.  Then, upload the terraform plan to cloud 
     <img src="images/p3_04.png" alt="p3_04.png"/>
 
 
-> [!NOTE]
+> [!TIP]
 > The deployment model determines the cloud resources to be included in the terraform plan.  For example, if **Outbound** traffic is the only selected model, an external load balancer will not be created. 
     
 
@@ -469,8 +465,7 @@ Configure the AIRS deployment in SCM.  Then, upload the terraform plan to cloud 
     <img src="images/p3_05.png" alt="p3_05.png"/>
     
 > [!NOTE]
-> AIRS Discovery should have automatically discovered the VPCs and k8s namespaces within your GCP project. 
-    
+> AIRS Discovery should have automatically discovered the VPC networks, including the k8s namespaces you created in the previous task. 
 
 5. Select `AI Runtime Security` and set the following values:
 
@@ -579,7 +574,7 @@ In cloud shell, upload & apply the `security` terraform plan. This plan creates 
     cd airs001*
     ```
 
-> [!NOTE]
+> [!TIP]
 > The <code>security_project</code> directory contains the terraform plan to create the AIRS infrastructure.
     
 
@@ -613,13 +608,13 @@ In cloud shell, upload & apply the `security` terraform plan. This plan creates 
      }
     </pre>
     
-> [!NOTE]
+> [!TIP]
 > The terraform plan creates all the required resources to support a scalable architecture with intra-region redundancy. 
     
 
 7. Record the IP addresses within the <b><code>lbs_external_ips</code></b> & <b><code>lbs_internal_ips</code></b> outputs.
 
-> [!CAUTION]
+> [!IMPORTANT]
 > Proceed to the next task.  Do not wait for the AIRS firewalls and tag collector to bootstrap to SCM. This process can take up to 15 minutes to complete.
 
 
@@ -684,8 +679,8 @@ Create two dataplane interfaces: `untrust (eth1/1)` & `trust (eth1/2)`.  These i
     
     <img src="images/p4_06.png" alt="p4_06.png"/>
 
-    > [!CAUTION]
-    > <b>Uncheck</b> <code>Automatically create default route</code> <b>on</b> <code>trust (eth1/2)</code>.
+> [!IMPORTANT]
+> <b>Uncheck</b> <code>Automatically create default route</code> <b>on</b> <code>trust (eth1/2)</code>.
 
 
 5. Click **Save**.
@@ -705,7 +700,7 @@ Create a loopback interface to receive health checks from each load balancer.
     <img src="images/p4_08a.png" alt="p4_08a.png"/>
 
 
-> [!NOTE]
+> [!TIP]
 >  If you lost your the load balancer addresses from the terraform plan, you can retrieve them using the following command in cloud shell:
 > ```
 > gcloud compute forwarding-rules list \
@@ -751,7 +746,7 @@ Create a logical router to handle load balancer health checks and to route inter
 
     <img src="images/p4_11.png" alt="p4_11.png"/>
 
-> [!NOTE]
+> [!TIP]
 > (Optional) Enabling <code>ECMP</code> allows you to point multiple internal load balancers towards the firewalls while maintaining a single LR.
     
 
@@ -793,7 +788,7 @@ Create a security policy to allow all traffic.
     <img src="images/p4_17.png" alt="p4_17.png"/>
 
 > [!CAUTION]
-> **Do not create this policy for production workloads since it allows all traffic.** 
+> **This policy allows all traffic.  Do not use within production environments.** 
 
 
 
@@ -831,7 +826,7 @@ Verify the health checks of the internal & external load balancers are up.  This
 
     <img src="images/p4_21.png" alt="p4_21.png"/>
 
-> [!CAUTION]
+> [!IMPORTANT]
 > There is a problem in the terraform plan that causes the external load balancer's health checks to fail.
 >
 > To fix the health check, run the following in cloud shell:
@@ -922,8 +917,7 @@ Review the cloud resources created by the `application` terraform plan.
     <img src="images/p5_04.png" alt="p5_04.png"/>
 
 
-> [!NOTE]
-> Congratulations, all outbound traffic from the <code>gce-vpc</code> and <code>gke-vpc</code> networks will now be inspected by AI Runtime Security. 
+> <b> Congratulations, all outbound traffic from the <code>gce-vpc</code> and <code>gke-vpc</code> networks will now be inspected by AI Runtime Security.</b>
     
 
 
@@ -974,7 +968,7 @@ Create a forwarding rule on the external load balancer to forward internet inbou
         --format="value(IPAddress)"
     ```
 
-> [!NOTE]
+> [!TIP]
 > The new load balancer IP will be the original packet's destination address within the NAT policy. 
     
 
@@ -1031,13 +1025,12 @@ Create a forwarding rule on the external load balancer to forward internet inbou
 
     <img src="images/p5_11.png" alt="p5_11.png"/>
 
-> [!NOTE]
-> Congratulations, AIRS is now in-line with internet inbound traffic to your AI application.
+> <b>Congratulations, AIRS is now in-line with internet inbound traffic to your AI application.</b>
     
 
 
 ## Task 6. Using AI Security Profile
-In this task, configure the AIRS firewalls to inspect traffic between the AI apps and their models with AI security profiles.  Then, re-use the prompt injection techniques against the `openai-app` from the previous task.
+In this task, use AI security profiles to inspect raffic between AI applications and models.  Once configured, re-run the prompt injection techinque used in the previous task against the `openai-app`. 
 
 ### Step 1. Create an AI Security Profile
 Create an AI security profile and associate it with a security policy to inspect AI traffic.
@@ -1054,9 +1047,7 @@ Create an AI security profile and associate it with a security policy to inspect
 
     <img src="images/p6_01.png" alt="p6_01.png"/>
 
-5. Set the **Name** of the model group to `alert-group`.
-
-6. In <b>Target Models</b>, add the following models: <br/>→ **Google**: `Gemini 1.5 Pro` & `Gemini 1.5 Flash` <br/>→ **OpenAI**: `All available models`
+5. Set the **Name** of the model group to `alert-group`.  In <b>Target Models</b>, add the following models: <br/>→ **Google**: `Gemini 1.5 Pro` & `Gemini 1.5 Flash` <br/>→ **OpenAI**: `All available models`
 
     <img src="images/p6_02.png" alt="p6_02.png"/>
 
@@ -1098,11 +1089,10 @@ Add the AI security profile to a security profile group.  Then, attach the group
 ### Step 3. Enable TLS Decryption on AIRS
 Create a decryption policy and export the `Root CA` from SCM. Then, update the local certificate store on `ai-vm` with the root CA.
 
-1. Go to **Security Services → Decryption → Add Profile**.
-
 > [!NOTE]
 > AIRS must decrypt traffic between the AI app and the model in order to apply full AI protections.
-    
+  
+1. Go to **Security Services → Decryption → Add Profile**.
 
 2. Name the profile `airs-decrypt`.
 
@@ -1137,12 +1127,9 @@ Create a decryption policy and export the `Root CA` from SCM. Then, update the l
 9.  Select `Base64 Encoded Certificate (PEM)` → click **Save**.
     
 
-9. **Push** the changes to the AIRS firewalls.
+9. **Push** the changes to the AIRS firewalls and wait for the push to complete.
 
     <img src="images/p6_10.png" alt="p6_10.png"/>
-
-> [!CAUTION]
-> Wait for the push to complete.
 
 
 ### Step 4. Update AI VM with Root CA
@@ -1175,7 +1162,7 @@ Update the local certificate store on `ai-vm` to use the root CA.
         --tunnel-through-iap
     ```
 
-2. Stop both the `gemini-app` & `openai-app` services.
+2. Stop & disable the `gemini-app` & `openai-app` application services.
 
     ```shell
     sudo systemctl stop gemini.service
@@ -1204,7 +1191,7 @@ Update the local certificate store on `ai-vm` to use the root CA.
     export SSL_CERT_FILE=/etc/ssl/certs/root_ca.pem
     export REQUESTS_CA_BUNDLE=/etc/ssl/certs/root_ca.pem
     export GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=/etc/ssl/certs/root_ca.pem
-    streamlit run my-app.py --browser.serverAddress=localhost --server.enableCORS=false —server.enableXsrfProtection=false --server.port 80
+    nohup streamlit run my-app.py --browser.serverAddress=localhost --server.enableCORS=false —server.enableXsrfProtection=false --server.port 80
     ```
 
     (Output)
@@ -1223,16 +1210,17 @@ Attempt to exploit the `openai-app` using the same prompt injection technique fr
     
     <img src="images/p5_10.png" alt="p5_10.png"/>
 
-    > If you lost the forwarding rule address, open a new cloud shell tab (<b>+</b> sign) and enter the following command:
-
-    ```shell
-    gcloud compute forwarding-rules list \
-        --filter="name ~ '.*external-lb-app1.*'" \
-        --format="value(IPAddress)"
-    ```
+> [!TIP]
+> If you lost the forwarding rule address, open a new cloud shell tab (<b>+</b> sign) and enter the following command:
+>
+>    ```
+>    gcloud compute forwarding-rules list \
+>        --filter="name ~ '.*external-lb-app1.*'" \
+>        --format="value(IPAddress)"
+>    ```
     
 
-3. In each tab, enter the prompts to re-run the prompt injection used earlier. 
+3. Re-run the prompt injection used in the previous task against the `open-ai` application. 
 
     **Prompt 1**
     ```
@@ -1259,7 +1247,7 @@ Attempt to exploit the `openai-app` using the same prompt injection technique fr
 > The prompt injection will return results because the action within the AI security profile is set to <code>alert</code>.
 
 
-  <img src="images/p6_12.png" alt="p6_12.png"  width="90%" />
+    <img src="images/p6_12.png" alt="p6_12.png"  width="90%" />
     
 
 4. In SCM, go to **Incidents and Alerts → Log Viewer**.
@@ -1269,8 +1257,7 @@ Attempt to exploit the `openai-app` using the same prompt injection technique fr
     <img src="images/p6_13.png" alt="p6_13.png" />
 
 > [!NOTE]
-> A number of logs should appear showing AIRS decrypted, inspected, and detected threats between the AI model and app.
-    
+> Threat logs should appear showing the AIRS firewalls decrypted, inspected, & detected threats between the `openai-app` and model. 
 
 6. (Optional) Approximately 10 minutes after detection, more detailed logs will appear within the **Firewall/AI Security** logs within **Log Viewer**.
 
@@ -1284,24 +1271,23 @@ Attempt to exploit the `openai-app` using the same prompt injection technique fr
 
 
 ## Task 7. Securing GKE Traffic
-In this task, you will deploy CNI chaining to the GKE cluster, enabling you to deliver prevention capabilities within and across containerized environments. 
+
+In this task, deploy AIRS CNI chaining to the GKE cluster.  This feature encapsulates GKE traffic to the AIRS firewall, giving AIRS complete visibility into pod addresses for security enforcement. Then, use this capability to secure a vulnerable pod within the cluster. 
+
 
 ### Step 1. Deploy Helm Chart
 Use helm to deploy the `pan-cni` to the GKE cluster.
 
-1. In cloud shell, if you are still logged into `ai-vm` log out by typing `exit` twice.
+1. In cloud shell, click the **+** icon to open a new cloud shell tab. 
     
-    ```shell
-    exit
-    ```
-    
-2. In cloud shell, change your path to the helm directory.
+2. In the new cloud shell, change your path to the helm directory.
 
     ```shell
     cd
     cd airs001*/architecture/helm
     ```
-
+ >[!TIP]
+ > The `helm` directory contains the helm chart to deploy the CNI chaining to your GKE clsuters. 
 
 3. Make a directory named `ai-runtime-security`.
 
@@ -1309,7 +1295,7 @@ Use helm to deploy the `pan-cni` to the GKE cluster.
     mkdir ai-runtime-security
     ```
 
-4. Move the helm chart to the n`ai-runtime-security` directory.
+4. Move the helm chart to the `ai-runtime-security` directory.
 
     ```shell
     mv Chart.yaml ai-runtime-security
@@ -1342,24 +1328,9 @@ Use helm to deploy the `pan-cni` to the GKE cluster.
     <pre>
     NAME                    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
     ai-runtime-security     kube-system     1               2024-09-08 14:25:00.725753722 +0000 UTC deployed        ai-runtime-security-0.1.0       11.2.2</pre>
-    
-
-8. Verify the `pan-cni` daemonset is running each node within the cluster. 
 
 
-    ```shell
-    kubectl get pods -n kube-system | grep pan
-    ```
-    
-
-9. Verify the endpoint slice is running.
-
-    ```shell
-    kubectl get endpointslice -n kube-system | grep pan
-    ```
-    
-
-9. Verify the k8s service is running.
+8. Verify the k8s service is running.
 
     ```shell
     kubectl get svc -n kube-system | grep pan
@@ -1369,16 +1340,13 @@ Use helm to deploy the `pan-cni` to the GKE cluster.
     <pre>
     pan-ngfw-svc           ClusterIP   10.30.252.0     none        6080/UDP        1m15s</pre>
   
-> [!NOTE]
-> Congratulations, you've deployed the <code>pan-cni</code> to the cluster.  
->
-> After you annotate namespaces, traffic will be transparently steered to the AIRS firewalls for inspection.
+> <b>Congratulations, you've deployed the <code>pan-cni</code> to the cluster. After you annotate namespaces, traffic will be transparently steered to the AIRS firewalls for inspection.</b>
     
 
 
 
 ### Step 2. Deploy workloads to cluster pods
-Deploy an attacker pod and victim pod to the cluster.  Then, from the `attacker` pod, attempt to exploit a log4j vulnerability on a `victim` pod.
+Deploy an attacker and a victim pod to the cluster.  Then, from the `attacker` pod, attempt to exploit a log4j vulnerability on a `victim` pod.
 
 1. In cloud shell, create two namespaces: `attacker` & `victim`. 
 
@@ -1394,20 +1362,20 @@ Deploy an attacker pod and victim pod to the cluster.  Then, from the `attacker`
     kubectl annotate namespace attacker paloaltonetworks.com/firewall=pan-fw
     ```
 
-> [!NOTE]
-> Traffic to/from namespaces and pods annotated with <code>paloaltonetworks.com/firewall=pan-fw</code> will be encapsulated and inspected by AIRS.
+> [!TIP]
+> Traffic to and from namespaces annotated with <code>paloaltonetworks.com/firewall=pan-fw</code> will be encapsulated and inspected by AIRS.
     
 
 3. Deploy a vulnerable application to the `victim` namespace.
 
     ```shell
-    kubectl apply -n victim -f https://raw.githubusercontent.com/mattmclimans/lab-works/main/012/yaml/victim.yaml
+    kubectl apply -n victim -f https://raw.githubusercontent.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial/yaml/victim.yaml
     ```
 
 4. Deploy an `attacker` pod to the `attacker` namespace.
 
     ```shell
-    kubectl apply -n attacker -f https://raw.githubusercontent.com/mattmclimans/lab-works/main/012/yaml/attacker.yaml
+    kubectl apply -n attacker -f https://raw.githubusercontent.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial/yaml/attacker.yaml
     ```
 
 4. Verify the `attacker` pods are running. 
@@ -1423,7 +1391,7 @@ Deploy an attacker pod and victim pod to the cluster.  Then, from the `attacker`
     attacker-svr   1/1     Running   0          11s</pre>
     
 
-> [!CAUTION]
+> [!IMPORTANT]
 > Do not proceed until the <code>attacker</code> pods <code>READY</code> state shows <code>1/1</code>.
 
 
@@ -1491,81 +1459,11 @@ Deploy an attacker pod and victim pod to the cluster.  Then, from the `attacker`
     <img src="images/p7_01.png" alt="p7_01.png" />
 
 > [!NOTE]
-> In the logs, you will observe that AIRS detects threats between the <code>attacker</code> and <code>victim</code> pods.
+> Within the logs, you should see AIRS detected threats between the <code>attacker</code> and <code>victim</code> pods.
 >
-> Importantly, the pod addresses remain visible and are not masked by the node addresses. This visibility is due to AIRS's CNI chaining > capability, which encapsulates traffic from specific namespaces, giving AIRS complete context into workload traffic within and to/from > the cluster.
+> Importantly, the pod addresses remain visible and are not masked by the node addresses. This visibility is due to AIRS's CNI chaining capability, which encapsulates traffic from specific namespaces, giving AIRS complete context into workload traffic within and to/from > the cluster.
 
-
-
-## Task 8. Tag Collection (on your own)
-As part of the AIRS deployment, an IP-Tag virtual machine (`tag-collector`) is created, enabling you to retrieve IP-Tag information from clusters.  This information can then be used to populate dynamic address groups (DAGs) for automated security enforcement. 
-
-Below are several steps to help you get started.**
-
-#### Creating service account
-
-1. In cloud shell, go to the `helm` directory.
-
-    ```shell
-    cd
-    cd airs001*/architecture/helm
-    ```
-
-2. Create the service account on `cluster1`. 
-
-    ```shell
-    kubectl apply -f plugin-serviceaccount.yaml
-    ```
-
-    (Output)
-    ```shell
-    clusterrole.rbac.authorization.k8s.io/pan-plugin-crole created
-    clusterrolebinding.rbac.authorization.k8s.io/pan-plugin-crb created
-    serviceaccount/pan-plugin-user created
-    secret/pan-plugin-cluster-mode-secret created
-    secret/pan-plugin-user-secret created
-    ```    
-
-2. Create a `credentials.json` from the service account. 
-
-    ```shell
-    kubectl get secret pan-plugin-user-secret -n kube-system -o json > credentials.json
-    ```
-
-3. Gzip the `credentials.json` with `base64` encoding. 
-
-    ```shell
-    gzip -cf credentials.json | base64 -w 0 > credentials.json.modified
-    ```
-    
-
-
-4. Output the `base64` encoded string.
-
-    ```shell
-    cat credentials.json.modified
-    ```
-
-> [!NOTE]
-> The <code>base64</code> encoding enables you to upload the credentials file to the <code>tag-collector</code> VM.
-    
-
-5. Copy and paste the string to a text editor on your local machine.
-
-
-6. Retrieve the management IP of the `tag-collector`.
-
-    ```shell
-    gcloud compute instances list \
-        --filter="name:tc-vm-01" \
-        --format="get(networkInterfaces[0].accessConfigs[0].natIP)"
-    ```
-
-7. SSH to the `tag-collector` using the public IP.
-
-    <pre><code>ssh admin@<i>EXTERNAL_IP</i> -i ~/.ssh/airs</code></pre>
- 
-
+> As part of the AIRS deployment, an IP-Tag virtual machine (`tag-collector`) is created, enabling you to retrieve IP-Tag information from clusters.  This information can then be used to populate dynamic address groups (DAGs) for automated security enforcement. If you would like to enable this, please see [Harvesting IP Tags](https://docs.paloaltonetworks.com/ai-runtime-security/administration/deploy-ai-instances-in-public-clouds-as-a-software/use-case-harvesting-ip-tags-k8s-clusters). 
 
 ## Clean Up
 
