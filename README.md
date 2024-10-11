@@ -1463,6 +1463,7 @@ Deploy an attacker and a victim pod to the cluster.  Then, from the `attacker` p
 >
 > Importantly, the pod addresses remain visible and are not masked by the node addresses. This visibility is due to AIRS's CNI chaining capability, which encapsulates traffic from specific namespaces, giving AIRS complete context into workload traffic within and to/from > the cluster.
 
+> [!NOTE]
 > As part of the AIRS deployment, an IP-Tag virtual machine (`tag-collector`) is created, enabling you to retrieve IP-Tag information from clusters.  This information can then be used to populate dynamic address groups (DAGs) for automated security enforcement. If you would like to enable this, please see [Harvesting IP Tags](https://docs.paloaltonetworks.com/ai-runtime-security/administration/deploy-ai-instances-in-public-clouds-as-a-software/use-case-harvesting-ip-tags-k8s-clusters). 
 
 ## Clean Up
