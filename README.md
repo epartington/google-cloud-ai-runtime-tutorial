@@ -133,7 +133,7 @@ Create the brownfield environment in your Google Cloud project.
     | `gcp_region` | The deployment region. |
     | `gcp_zone` | The deployment zone within `gcp_region` |
     | `openai_api_key` | The OpenAI API key from the previous step. |
-    | `ai_vm_image` | The image name of the `ai-vm`.  Set to:  https://www.googleapis.com/compute/v1/projects/ql-hosting-10131989/global/images/x705972644-ai-app-v2 |
+    | `allow_ips` | A list of IPs allowed to access the public addresses of the workloads. | 
 
 6. When ready, initialize and apply the terraform plan.
 
@@ -737,8 +737,8 @@ Create a logical router to manage load balancer health checks and route workload
     <img src="images/p4_11.png" alt="p4_11.png"/>
 
 > [!TIP]
-> Enabling <code>ECMP</code> is optional. It allows you to point multiple internal load balancers towards the firewalls while maintaining a single LR.
-    
+> Enabling <code>ECMP</code> is optional. It enables you to use multiple internal load balancers while maintaining a single LR.
+
 
 3. In **IPv4 Static Routes**, click **Edit → Add Static Route**.
 
@@ -901,7 +901,7 @@ Review the cloud resources created by the `application` terraform plan.
     <img src="images/p5_03.png" alt="p5_03.png"/>
 
 > [!NOTE]
-> The <code>gce-vpc</code> should now have a default route (pri: <code>900</code>) to the <code>trust-vpc</code>. 
+> The <code>gce-vpc</code> should now have a default route (<code>priority: 900</code>) to the <code>trust-vpc</code>. 
     
 
 6. Verify the `gke-vpc` also has the same default route to the `trust-vpc`.

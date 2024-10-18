@@ -7,8 +7,9 @@ locals {
   region                   = var.gcp_region
   zone                     = var.gcp_zone
   airs_name                = "airs-${substr(random_string.main.result, 0, 4)}"
-  ai_vm_image              = var.ai_vm_image
+  ai_vm_image              = "https://www.googleapis.com/compute/v1/projects/ql-hosting-10131989/global/images/x705972644-ai-app-v2"
   openai_api_key           = var.openai_api_key
+  allowed_ips              = var.allowed_ips
   gce_subnet_name          = "gce-vpc-${local.region}-subnet"
   gce_subnet_cidr          = "10.1.0.0/24"
   gke_subnet_name          = "gke-vpc-${local.region}-subnet"
@@ -132,10 +133,22 @@ module "vpc_gke" {
 
   firewall_rules = [
     {
-      name      = "gke-vpc-ingress-all"
+      name      = "gke-vpc-ingress-public"
       direction = "INGRESS"
       priority  = "100"
-      ranges    = ["0.0.0.0/0"]
+      ranges    = local.allowed_ip
+      allow = [
+        {
+          protocol = "all"
+          ports    = []
+        }
+      ]
+    },
+    {
+      name      = "gke-vpc-ingress-rfc"
+      direction = "INGRESS"
+      priority  = "100"
+      ranges    = ["10.0.0.0/8","192.168.0.0/16","172.16.0.0/12"]
       allow = [
         {
           protocol = "all"
@@ -172,10 +185,22 @@ module "vpc_gce" {
 
   firewall_rules = [
     {
-      name      = "gce-vpc-ingress-all"
+      name      = "gce-vpc-ingress-public"
       direction = "INGRESS"
       priority  = "100"
-      ranges    = ["0.0.0.0/0"]
+      ranges    = local.allowed_ips
+      allow = [
+        {
+          protocol = "all"
+          ports    = []
+        }
+      ]
+    },
+    {
+      name      = "gce-vpc-ingress-rfc"
+      direction = "INGRESS"
+      priority  = "100"
+      ranges    = ["10.0.0.0/8","192.168.0.0/16","172.16.0.0/12"]
       allow = [
         {
           protocol = "all"

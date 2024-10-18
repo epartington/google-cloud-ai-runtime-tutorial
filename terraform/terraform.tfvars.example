@@ -2,4 +2,4 @@ gcp_project_id = ""
 gcp_region     = "us-west1"
 gcp_zone       = "us-west1-a"
 openai_api_key = ""
-ai_vm_image    = ""
+allowed_ips    = ["0.0.0.0/0"]

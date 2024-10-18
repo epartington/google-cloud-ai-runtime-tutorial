@@ -24,7 +24,7 @@ variable "openai_api_key" {
   type        = string
 }
 
-variable "ai_vm_image" {
-  description = "URL to open AI image."
-  type        = string
+variable "allowed_ips" {
+  description = "A list of IP addresses allowed to access the public IPs of the workloads."
+  type        = list(string)
 }
