@@ -112,11 +112,11 @@ Create the brownfield environment in your Google Cloud project.
     gcloud services enable storage.googleapis.com
     ```
 
-3. Clone the repository.  
+3. Clone the repository & change your path to `/terraform`.  
     
     ```
     git clone https://github.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial
-    cd google-cloud-ai-runtime-tutorial
+    cd google-cloud-ai-runtime-tutorial/terraform
     ```
 
 4. Create a `terraform.tfvars` file.
@@ -318,9 +318,9 @@ Authenticate to the GKE cluster in `gke-vpc`.  Then, create 2 namespaces (`prd` 
 4. Deploy `jenkins` to both namespaces and `web-app` to the `prd` namespace. 
 
     ```shell
-    kubectl apply -n dev -f https://raw.githubusercontent.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial/main/009/jenkins.yaml
-    kubectl apply -n prd -f https://raw.githubusercontent.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial/main/009/jenkins.yaml
-    kubectl create -n prd -f https://raw.githubusercontent.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial/main/009/web-app.yaml
+    kubectl apply -n dev -f https://raw.githubusercontent.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial/main/yaml/jenkins.yaml
+    kubectl apply -n prd -f https://raw.githubusercontent.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial/main/yaml/jenkins.yaml
+    kubectl create -n prd -f https://raw.githubusercontent.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial/main/yaml/web-app.yaml
     ```
 
 > [!TIP]
