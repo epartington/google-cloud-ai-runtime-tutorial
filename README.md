@@ -1361,13 +1361,13 @@ Deploy an attacker and a victim pod to the cluster.  Then, from the `attacker` p
 3. Deploy a vulnerable application to the `victim` namespace.
 
     ```shell
-    kubectl apply -n victim -f https://raw.githubusercontent.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial/yaml/victim.yaml
+    kubectl apply -n victim -f https://raw.githubusercontent.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial/main/yaml/victim.yaml
     ```
 
 4. Deploy an `attacker` pod to the `attacker` namespace.
 
     ```shell
-    kubectl apply -n attacker -f https://raw.githubusercontent.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial/yaml/attacker.yaml
+    kubectl apply -n attacker -f https://raw.githubusercontent.com/PaloAltoNetworks/google-cloud-ai-runtime-tutorial/main/yaml/attacker.yaml
     ```
 
 4. Verify the `attacker` pods are running. 
