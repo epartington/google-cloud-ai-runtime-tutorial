@@ -17,7 +17,7 @@ locals {
   gke_subnet_cidr_cluster  = "10.20.0.0/16"
   gke_subnet_cidr_services = "10.30.0.0/16"
   gke_cluster_name         = "cluster1"
-  gke_version              = "1.28"
+  gke_version              = "1.30"
   gke_secondary_ranges     = flatten(module.vpc_gke[*].subnets_secondary_ranges)
 }
 
@@ -53,7 +53,7 @@ resource "random_string" "main" {
 
 resource "google_storage_bucket" "gcs" {
   name          = "flow-logs-${random_string.main.result}"
-  location      = "US"
+  location      = "NORTHAMERICA-NORTHEAST1"
   force_destroy = true
 }
 
@@ -232,9 +232,10 @@ resource "google_project_iam_member" "ai" {
   member  = "serviceAccount:${google_service_account.ai.email}"
 }
 
+# n2d-standard-8 e2-standard-4
 resource "google_compute_instance" "ai" {
   name         = "ai-vm"
-  machine_type = "e2-standard-4"
+  machine_type = "n2d-standard-8"
   zone         = local.zone
 
   boot_disk {
@@ -291,10 +292,11 @@ module "gke" {
   network_policy             = true
   horizontal_pod_autoscaling = false
 
+  # e2-standard-2 n2d-standard-8
   node_pools = [
     {
       name               = "default-node-pool"
-      machine_type       = "e2-standard-2"
+      machine_type       = "n2d-standard-8"
       initial_node_count = 1
       auto_upgrade       = false
     }
